@@ -1,0 +1,149 @@
+from flask import Flask, request, abort
+
+from linebot import (
+    LineBotApi, WebhookHandler
+)
+from linebot.exceptions import (
+    InvalidSignatureError
+)
+from linebot.models import (
+    MessageEvent, TextMessage, TextSendMessage, LocationMessage
+)
+from linebot.exceptions import LineBotApiError
+
+import scrape as sc
+import urllib3.request
+import os
+
+app = Flask(__name__)
+
+YOUR_CHANNEL_ACCESS_TOKEN = os.environ["W1deLFsMd99E/v7ZHRzjJSXHTa7bH4gxXsrbwJEt2qP2hAmmmraeHqve86Xu9El7jQKwcDDt823PvUAVBtlPNUf4F0KBTdWPbWH6lT6tAkYHjHiQWjYx78hpCF+/UBbF1IBcjViSXFEhHFnwOw25aQdB04t89/1O/w1cDnyilFU="]
+YOUR_CHANNEL_SECRET = os.environ["e2ff07a69710afd2d4a7b56cf0ec5e3a"]
+
+line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
+handler = WebhookHandler(YOUR_CHANNEL_SECRET)
+
+
+@app.route("/callback", methods=['POST'])
+def callback():
+    signature = request.headers['X-Line-Signature']
+
+    body = request.get_data(as_text=True)
+    app.logger.info("Request body: " + body)
+
+    try:
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        abort(400)
+    return 'OK'
+
+
+
+#操作部分
+
+            if (MessageEvent in self.entities and VideoMessage in self.entities[MessageEvent]):
+                for client in self.entities[MessageEvent][VideoMessage]:
+                    client.run(self.bot, event, self.options[client])
+
+@self.handler.add(MessageEvent, message=VideoMessage)
+        def handle_video_message(event):
+  video = event.message.video
+  if 'ユーザーガイド' in text:
+    line_bot_api.reply_message(
+      event.reply_token,
+      [
+      VideoSendMessage(text='ユーザーガイドを見るには一つ下のメッセージをタップしてください。'),
+      VideoSendMessage(text='IMG_6748.mp4')
+      ]
+    )
+
+@handler.add(MessageEvent, message=TextMessage)
+def handle_text_message(event):
+    text = event.message.text
+
+    event.reply_token,
+      [
+      TextSendMessage(text='利用可能な施設がx件見つかりました。メッセージをタップすると詳細な情報にアクセスできます'),
+
+      {
+  "type": "template",
+  "altText": "this is a carousel template",
+  "template": {
+      "type": "carousel",
+      "columns": [
+          {
+            "thumbnailImageUrl": "https://example.com/bot/images/item1.jpg",
+            "imageBackgroundColor": "#FFFFFF",
+            "title": "this is menu",
+            "text": "description",
+            "defaultAction": {
+                "type": "uri",
+                "label": "View detail",
+                "uri": "http://example.com/page/123"
+            },
+            "actions": [
+                {
+                    "type": "postback",
+                    "label": "Buy",
+                    "data": "action=buy&itemid=111"
+                },
+                {
+                    "type": "postback",
+                    "label": "Add to cart",
+                    "data": "action=add&itemid=111"
+                },
+                {
+                    "type": "uri",
+                    "label": "View detail",
+                    "uri": "http://example.com/page/111"
+                }
+            ]
+          },
+          {
+            "thumbnailImageUrl": "https://example.com/bot/images/item2.jpg",
+            "imageBackgroundColor": "#000000",
+            "title": "this is menu",
+            "text": "description",
+            "defaultAction": {
+                "type": "uri",
+                "label": "View detail",
+                "uri": "http://example.com/page/222"
+            },
+            "actions": [
+                {
+                    "type": "postback",
+                    "label": "Buy",
+                    "data": "action=buy&itemid=222"
+                },
+                {
+                    "type": "postback",
+                    "label": "Add to cart",
+                    "data": "action=add&itemid=222"
+                },
+                {
+                    "type": "uri",
+                    "label": "View detail",
+                    "uri": "http://example.com/page/222"
+                }
+            ]
+          }
+      ],
+      "imageAspectRatio": "rectangle",
+      "imageSize": "cover"
+  }
+}
+      ]
+    )
+
+    )
+
+
+
+
+
+
+#ラスト
+    if __name__ == "__main__":
+    port = int(os.getenv("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
+
